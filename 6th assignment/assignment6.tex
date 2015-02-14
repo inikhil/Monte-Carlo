@@ -1,0 +1,268 @@
+\documentclass[10pt]{article}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{float}
+\usepackage{color}
+\usepackage{picture}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{subcaption}
+\usepackage[utf8]{inputenc}
+
+% Used to change font to Times TX
+\usepackage{txfonts}
+\usepackage[T1]{fontenc}
+
+% Used for the figures that have been inserted into the document.
+\floatstyle{plain} 
+\restylefloat{figure}
+
+% Used so as not to indent paragraphs.
+\setlength\parindent{0pt}
+
+% Used for syntax highlighting in code.
+\definecolor{skyblue}{rgb}{0.53, 0.81, 0.92}
+\definecolor{lightred}{rgb}{0.90, 0.36, 0.36}
+\definecolor{darkkhaki}{rgb}{0.71, 0.51, 0.06}
+
+% Default parameters for listings package.
+\lstset {
+	tabsize=4,
+	keywordstyle=\color{darkkhaki},
+	commentstyle=\color{blue},
+	showstringspaces=false,
+	stringstyle=\color{lightred},
+	frame=TLRB,
+	captionpos=b,
+	basicstyle=\small\sffamily
+}
+
+% Default parameters for hyperref package.
+\hypersetup {
+	pdftoolbar=true,
+	pdfmenubar=true,
+	colorlinks=true,
+	linkcolor=red,
+	citecolor=green,
+	filecolor=magenta,
+	urlcolor=cyan
+}
+
+\begin{document}
+
+\title{\textbf{\textsc{Assignment 6}}}
+\author{MA226 : Monte Carlo Simulation \\
+			Name: Nikhil Agarwal \\
+			Roll No : 11012323 \\
+			IIT Guwahati}
+\date{}
+\maketitle
+
+\begin{center}
+	\line(1, 0){15cm}
+\end{center}
+
+\section{Problem 1}
+
+\subsection{Statement}
+Use the Box-Muller method and Marsaglia-Bray method to do the following:\\
+(a) Generate a sample of 100 , 500 and 10000 values from $ N(0,1) $ . Hence find the sample mean and variance.\\  
+(b) Draw histogram in all cases.\\
+\subsection{Solution}
+\subsection{Box-Muller Method}
+\enlargethispage*{1000pt}
+\subsubsection{Graph}
+\begin{figure}[H]
+		\centering
+		\resizebox{0.6\linewidth}{!}{\includegraphics{q1_100}}
+		\caption{Normall Distribution in R}
+		\label{fig:q1_f1_a}
+\end{figure}
+\pagebreak
+\begin{figure}[H]
+		\centering
+		\resizebox{0.6\linewidth}{!}{\includegraphics{q1_500}}
+		\caption{Normall Distribution in R}
+		\label{fig:q1_f1_a}
+\end{figure}
+\begin{figure}[H]
+		\centering
+		\resizebox{0.6\linewidth}{!}{\includegraphics{q1_10000}}
+		\caption{Normall Distribution in R}
+		\label{fig:q1_f1_a}
+\end{figure}
+\pagebreak
+\subsubsection{R Code}
+\lstinputlisting[caption=\texttt{R}  Code which generates the normal variates in Box-Muller, label=lst:q1_prog1, language=R]{q1.R}
+
+
+\subsubsection{Results}
+\begin{itemize}
+\item Mean and variance for n=100 is $0.13241$ and $ 1.14388 $
+\item Mean and variance for n=500 is  $0.031551$ and $ 1.087083 $
+\item Mean and variance for n=10000 is  $0.00166$ and $ 0.989055 $
+\end{itemize}
+
+\subsubsection{Verification}
+The value of mean for Normal distribution should be  be $ 0 $ and value of variance  for Normal distribution should be  $ 1 $ . As the value of n increase mean and variance tends to $ 0 $ and $ 1 $ respectively . Hence our generated numbers are correct. 
+\pagebreak
+
+\subsection{Marsaglia-Bray Method}
+\enlargethispage*{1000pt}
+\subsubsection{Graph}
+\begin{figure}[H]
+		\centering
+		\resizebox{0.6\linewidth}{!}{\includegraphics{q1_100b}}
+		\caption{Normall Distribution in R}
+		\label{fig:q1_f1_a}
+\end{figure}
+\begin{figure}[H]
+		\centering
+		\resizebox{0.6\linewidth}{!}{\includegraphics{q1_500b}}
+		\caption{Normall Distribution in R}
+		\label{fig:q1_f1_a}
+\end{figure}
+\pagebreak
+\begin{figure}[H]
+		\centering
+		\resizebox{0.6\linewidth}{!}{\includegraphics{q1_10000b}}
+		\caption{Normall Distribution in R}
+		\label{fig:q1_f1_a}
+\end{figure}
+\pagebreak
+\subsubsection{R Code}
+\lstinputlisting[caption=\texttt{R}  Code which generates the normal variates in Marsgalia-Bray, label=lst:q1_prog2, language=R]{q1b.R}
+
+
+\subsubsection{Results}
+\begin{itemize}
+\item Mean and variance for n=100 is $ -0.0037437 $ and $ 1.09035 $
+\item Mean and variance for n=500 is  $-0.015579$ and $ 0.98465 $
+\item Mean and variance for n=10000 is  $ 0.0114823 $ and $ 0.96849064 $
+\end{itemize}
+
+\subsubsection{Verification}
+The value of mean for Normal distribution should be  be $ 0 $ and value of variance  for Normal distribution should be  $ 1 $ . As the value of n increase mean and variance tends to $ 0 $ and $ 1 $ respectively . Hence our generated numbers are correct. 
+\pagebreak
+\section{Problem2}
+\subsection{Statement}
+Now use the above generated values to generate samples from  $N(\mu = 0 , \sigma^2= 5 )$ and $N(\mu = 5 , \sigma^2= 5 )$. Hence plot the empirical(from sample with size 500) distribution function and theoretical distribution function in the same plot.
+\subsection{Solution}
+\subsection{Box-Muller Method}
+\enlargethispage*{1000pt}
+\subsubsection{Graph for $N(\mu = 0 , \sigma^2= 5 )$ }
+\begin{figure}[H]
+		\centering
+		\resizebox{0.6\linewidth}{!}{\includegraphics{q2_0_100}}
+		\caption{Normall Distribution in R}
+		\label{fig:q1_f1_a}
+\end{figure}
+\pagebreak
+\begin{figure}[H]
+		\centering
+		\resizebox{0.6\linewidth}{!}{\includegraphics{q2_0_500}}
+		\caption{Normall Distribution in R}
+		\label{fig:q1_f1_a}
+\end{figure}
+\begin{figure}[H]
+		\centering
+		\resizebox{0.6\linewidth}{!}{\includegraphics{q2_0_10000}}
+		\caption{Normall Distribution in R}
+		\label{fig:q1_f1_a}
+\end{figure}
+\pagebreak
+
+\subsection{Marsaglia-Bray Method}
+\enlargethispage*{1000pt}
+\subsubsection{Graph for  $N(\mu = 5 , \sigma^2= 5 )$ }
+\begin{figure}[H]
+		\centering
+		\resizebox{0.6\linewidth}{!}{\includegraphics{q2_5_100}}
+		\caption{Normall Distribution in R}
+		\label{fig:q1_f1_a}
+\end{figure}
+\begin{figure}[H]
+		\centering
+		\resizebox{0.6\linewidth}{!}{\includegraphics{q2_5_500}}
+		\caption{Normall Distribution in R}
+		\label{fig:q1_f1_a}
+\end{figure}
+\pagebreak
+\begin{figure}[H]
+		\centering
+		\resizebox{0.6\linewidth}{!}{\includegraphics{q2_5_10000}}
+		\caption{Normall Distribution in R}
+		\label{fig:q1_f1_a}
+\end{figure}
+\pagebreak
+\subsubsection{R Code}
+\lstinputlisting[caption=\texttt{R}  Code which generates the normal variates, label=lst:q1_prog2, language=R]{q2.R}
+
+\subsection{Empirical distribution and Theoretical distribution}
+\subsubsection{Graph}
+\begin{figure}[H]
+		\centering
+		\resizebox{0.6\linewidth}{!}{\includegraphics{q2_0}}
+		\caption{Theoretical Distribution in Black and Empirical Distribution in Yellow}
+		\label{fig:q1_f1_a}
+\end{figure}
+\pagebreak
+\begin{figure}[H]
+		\centering
+		\resizebox{0.6\linewidth}{!}{\includegraphics{q2_1}}
+		\caption{Theoretical Distribution in Black and Empirical Distribution in Yellow}
+		\label{fig:q1_f1_a}
+\end{figure}
+\pagebreak
+\subsubsection{R Code}
+\lstinputlisting[caption=\texttt{R}  Code which generate the Empirical and Theoretical distribution, label=lst:q1_prog2, language=R]{q2b1.R}
+
+
+\subsubsection{Result}
+The Empirical distribution function and theoretical distribution function almost overlaps on each other because the numbers generated are in very small range.For Theoretical distribution probabilty $ 1/n $ increament for each next point does not increase y axis by large amount and hence the point representation looks almost as a curve while for Empirical distribution difference between two points in x axis is so less that they overlaps hence we get a curve.
+\pagebreak
+\section{Problem3}
+\subsection{Statement}
+
+Keep a track of computational time required for both the methods . Which method is faster?
+\subsection{Box-Muller}
+\subsubsection{R Code}
+\lstinputlisting[caption=\texttt{R}  Code for time calculation in Box-Muller Method , label=lst:q1_prog2, language=R]{q3.R}
+\subsubsection{Result for time calculation in Box-Muller}
+\begin{itemize}
+\item For $ n=100 $ user time is $ 0 $ system time is $ 0 $ elapsed time is $ 0 $ .
+\item For $ n=500 $ user time is $ 0.01 $ system time is $ 0 $ elapsed time is $ 0.02 $ .
+\item For $ n=10000 $ user time is $ 2.18 $ system time is $ 0 $ elapsed time is $ 2.19 $
+\end{itemize}
+\subsection{Marsaglia-Bray}
+\subsubsection{R Code}
+\lstinputlisting[caption=\texttt{R} Code for time calculation in Marsaglia-Bray method , label=lst:q1_prog2, language=R]{q3b.R}
+\subsubsection{Result for tiime calculation in Marsgalia-Bray }
+\begin{itemize}
+\item For $ n=100 $ user time is $ 0 $ system time is $ 0 $ elapsed time is $ 0.02 $ .
+\item For $ n=500 $ user time is $ 0.01 $ system time is $ 0 $ elapsed time is $ 0.02 $ .
+\item For $ n=10000 $ user time is $ 0.46  $ system time is $ 0 $ elapsed time is $ 0.46 $
+\end{itemize}
+\pagebreak
+\subsection{Interpretation of computational time for both the methods}
+ The values presented (user, system, and elapsed) will be defined by our operating system, but generally, the user time relates to the execution of the code, the system time relates to our CPU, and the elapsed time is the difference in times since we started the stopwatch (and  generally will be equal to the sum of user and system times if the chunk of code was run altogether) . Since computing cos and sin require larger amount of time so the elapsed time in case of Box-Muller is greater than that of Marsgalia-Bray.
+\pagebreak
+
+\section{Problem4}
+\subsection{Statement}
+For Marsaglia-Bray method keep track of proportion of values rejected.How does it compare with $ 1 - \frac{\pi}{4} $
+\subsection{Solution}
+\subsubsection{R Code}
+\lstinputlisting[caption=\texttt{R} Code for time calculation in Marsaglia-Bray method , label=lst:q1_prog2, language=R]{q4.R}
+\subsubsection{Results}
+\begin{itemize}
+\item for n=100 the probability that the values were accepted came out to be 0.8695652 so the values rejected has probability 0.1304348 which is less than  $ 1 - \frac{\pi}{4} $ i.e. 0.215
+\item for n=500 the probability that the values were accepted came out to be 0.8726003 so the values rejected has probability 0.1273997 which is less than  $ 1 - \frac{\pi}{4} $ i.e. 0.215
+\item for n=100 the probability that the values were accepted came out to be 0.8776549 so the values rejected has probability 0.1223451 which is less than  $ 1 - \frac{\pi}{4} $ i.e. 0.215
+\end{itemize}
+\subsection{Interpretation of Results}
+The area of circle is $ {\pi} r^2 $ while that of square is $ 4r^2 $ . Therefore the probabilty that any number will lie in circle is given 
+by $\frac{\pi}{4}$ i.e 0.785 so the probability that the number will not lie in circle is 0.215 but through our calculations the probability of a point not lying in a circle is less than 0.2 . Hence Theoretical probability exceeds the experimental probability of a point not lying in a circle.
+\end{document}

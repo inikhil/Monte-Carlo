@@ -1,0 +1,39 @@
+main<-function()
+{
+	x<-vector()
+	mean<-0
+	x=runif(10)
+	print(x)
+	for(i in 1:10)
+	{
+		if(x[i]<0.45)
+		{
+			x[i]=3
+		}
+		if(x[i]<0.70)
+		{
+			x[i]=2
+		}
+		if(x[i]<0.85)
+		{
+			x[i]=4
+		}
+		if(x[i]<0.95)
+		{
+			x[i]=5
+		}
+		if(x[i]<1)
+		{
+			x[i]=1
+		}
+		mean<-mean+x[i]
+	}
+	mean<-mean/10
+	print(x)
+	print(mean)
+	return(var(x))
+
+}
+#To run the program:
+#source("q3.R")
+#calcul()

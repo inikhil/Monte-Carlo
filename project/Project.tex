@@ -1,0 +1,331 @@
+\documentclass[11pt]{article}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{float}
+\usepackage{color}
+\usepackage{picture}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{subcaption}
+\usepackage[utf8]{inputenc}
+\usepackage[linktocpage=true]{hyperref}
+
+% Used for the figures that have been inserted into the document.
+\floatstyle{plain} 
+\restylefloat{figure}
+
+% Used so as not to indent paragraphs.
+\setlength\parindent{0pt}
+
+% Used for syntax highlighting in code.
+\definecolor{skyblue}{rgb}{0.53, 0.81, 0.92}
+\definecolor{lightred}{rgb}{0.90, 0.36, 0.36}
+\definecolor{darkkhaki}{rgb}{0.71, 0.51, 0.06}
+
+% Default parameters for listings package.
+\lstset {
+	tabsize=4,
+	keywordstyle=\color{darkkhaki},
+	commentstyle=\color{blue},
+	showstringspaces=false,
+	stringstyle=\color{lightred},
+	frame=TLRB,
+	captionpos=b,
+	basicstyle=\small\ttfamily,
+	breaklines=true
+}
+
+% Default parameters for hyperref package.
+\hypersetup {
+	pdftoolbar=true,
+	pdfmenubar=true,
+	colorlinks=true,
+	linkcolor=red,
+	citecolor=green,
+	filecolor=magenta,
+	urlcolor=cyan
+}
+
+\newcommand{\superscript}[1]{\ensuremath{^{\textrm{#1}}}}
+\newcommand{\subscript}[1]{\ensuremath{_{\textrm{#1}}}}
+
+\numberwithin{equation}{section}
+
+\begin{document}
+
+\input{./Title.tex}
+
+\pagebreak
+
+\renewcommand\contentsname{{\Huge Contents}\vspace{0.5cm}}
+\addtocontents{toc}{~\hfill\textbf{Page}\par}
+\cleardoublepage
+\phantomsection
+\addtocontents{toc}{\linespread{1.5}\selectfont}
+\addcontentsline{toc}{section}{Contents}
+\tableofcontents
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{List of Figures}
+\renewcommand\listfigurename{{\Huge List of Figures}\vspace{0.5cm}}
+\addtocontents{lof}{\linespread{1.5}\selectfont}
+\addtocontents{lof}{~\hfill\textbf{Page}\par}
+\listoffigures
+
+\pagebreak
+
+\section{Theory}
+\medskip
+
+In probability theory and statistics, the Weibull distribution is a continuous probability distribution. It is named after Waloddi Weibull, who described it in detail in 1951, although it was first identified by Fr\'{e}chet (1927) and first applied by Rosin \& Rammler (1933) to describe a particle size distribution. The Weibull Distribution is given by the following density function:- 
+\begin{equation}	\label{eq:weibull_pdf}
+f\left(x; \beta, \theta\right) = \beta \theta^\beta x^{\beta - 1} e^{-\left(\theta x\right)^\beta}, \hspace{1.0cm} x,\: \theta,\: \beta > 0
+\end{equation}
+
+The Weibull Distribution has been subjected to different kinds of modifications to suit different purposes. One of the possible posterior modifications is of the form (density function):- 
+\begin{equation}	\label{eq:mod_weibull_pdf}
+f\left(x; \lambda, \alpha, \beta\right) = \lambda \beta \left(\dfrac{x}{\alpha}\right)^{\beta - 1}\: e^{\left(\frac{x}{\alpha}\right)^{\beta}}\: e^{\lambda \alpha \left(1 - e^{\left(\frac{x}{\alpha}\right)^{\beta}}\right)}, \hspace{1.0cm} x,\: \lambda,\: \alpha,\: \beta > 0
+\end{equation}
+
+Its cumulative distribution function is given by:-
+\begin{equation}	\label{eq:mod_weibull_cdf}
+F\left(x; \lambda, \alpha, \beta\right) = 1 - e^{\lambda \alpha \left(1 - e^{\left(\frac{x}{\alpha}\right)^{\beta}}\right)},\hspace{1.0cm} x,\: \lambda,\: \alpha,\: \beta > 0
+\end{equation}
+
+Our objective is to generate from this distribution. To achieve this, we have used the inverse transform method. As a start, we generate $u \sim U\left(0, 1\right)$ and obtain the Modified Weibull variate $x$ by 
+\begin{equation}	\label{eq:inv_mod_weibull_cdf}
+x = \alpha \left[\log\left(1 - \dfrac{1}{\lambda \alpha} \log\left(1 - u\right)\right)\right]^{\frac{1}{\beta}}
+\end{equation}
+
+In the process of generating sets of the same, we fix $\lambda, \beta$ and $\alpha$. We have, in this demonstration, taken cases where $\lambda > 1$ and $\lambda < 1$. We expect the plots of the distribution to be similar to the $\Gamma$ distribution for the different cases. \medskip
+
+Our next immediate concern is to use the simulated Weibull variates to sample $\lambda$ and $\beta$. To achieve this, we apply the Gibbs sampling algorithm which happens to be a special case of the ``Metropolis-Hastings algorithm'' which in turn is an extension of the basic rejection sampling algorithm. The essence of this algorithm lies in the fact that it is easier to sample from a conditional distribution than to marginalize by integrating over a joint distribution. We obtain full conditionals on $\lambda$ and $\beta$ upto proportionality from these equations:-
+\begin{subequations}
+	\begin{align}
+		p_1\left(\lambda | \beta, x\right) &\propto \lambda^{n - 1} e^{-\lambda \sum\limits_{i=1}^n \left(e^{x_i^\beta - 1}\right)} \label{eq:p1} \\[0.3cm]
+		p_2\left(\beta | \lambda, x\right) &\propto \beta^{n - 1} \left(\displaystyle\prod\limits_{i=1}^n x_i^{\beta - 1} \right) e^{\: \sum\limits_{i=1}^n x_i^\beta} e^{\: \lambda \sum\limits_{i=1}^n \left(1 - e^{x_i^\beta}\right)} \label{eq:p2}
+	\end{align}
+\end{subequations}
+
+The Metropolis–Hastings algorithm is a Markov Chain Monte Carlo (MCMC) method for obtaining a sequence of random samples from a probability distribution for which direct sampling is difficult. The Metropolis–Hastings algorithm can draw samples from any probability distribution $P\left(x\right)$, provided you can compute the value of a function $f\left(x\right)$ which is proportional to the density of $P$. The lax requirement that $f\left(x\right)$ should be merely proportional to the density, rather than exactly equal to it, makes the Metropolis-Hastings algorithm particularly useful, because calculating the necessary normalization factor is often extremely difficult in practice. \medskip
+
+The Metropolis-Hastings algorithm works by generating a sequence of sample values in such a way that, as more and more sample values are produced, the distribution of values more closely approximates the desired distribution, $P\left(x\right)$. These sample values are produced iteratively, with the distribution of the next sample being dependent only on the current sample value (thus making the sequence of samples into a Markov chain). Specifically, at each iteration, the algorithm picks a candidate for the next sample value based on the current sample value. Then, with some probability, the candidate is either accepted (in which case the candidate value is used in the next iteration) or rejected (in which case the candidate value is discarded, and current value is reused in the next iteration) - the probability of acceptance is determined by comparing the likelihoods of the current and candidate sample values with respect to the desired distribution $P\left(x\right)$. \medskip
+
+The Metropolis algorithm (which is a special case of the Metropolis-Hastings Algorithm) is given below : \medskip
+
+Let f(x) be a probability distribution that is proportional to the desired distribution P(x).
+
+\begin{enumerate}
+	\item Initialization: Choose an arbitrary point $x_0$ to be the first sample, and choose an arbitrary probability density $Q\left(x | y\right)$ which suggests a candidate for the next sample value $x$, given the previous sample value $y$. For the Metropolis algorithm, $Q$ must be symmetric; in other words, it must satisfy $Q\left(x | y\right) = Q\left(y | x\right)$. A usual choice is to let $Q\left(x | y\right)$ be a Gaussian distribution centered at $y$, so that points closer to $y$ are more likely to be visited next-making the sequence of samples into a random walk. The function $Q$ is referred to as the proposal density or jumping distribution.
+
+	\item For each iteration t:
+	\begin{itemize}
+		\item Generate a candidate $x^\ast$ for the next sample by picking from the distribution $Q\left(x^\ast | x_t\right)$.
+
+		\item Calculate the acceptance ratio $\alpha = \dfrac{f\left(x^\ast\right)}{f\left(x_t\right)}$, which will be used to decide whether to accept or reject the candidate. Because $f$ is proportional to the density of $P$, we have $\alpha = \dfrac{f\left(x^\ast\right)}{f\left(x_t\right)} = \dfrac{P\left(x^\ast\right)}{P\left(x_t\right)}$.
+
+		\item If $\alpha \geq 1$, then the candidate is more likely than $x_t$. Automatically accept the candidate by setting $x_{t+1} = x^\ast$. Otherwise, accept the candidate with probability $\alpha$; if the candidate is rejected, put $x_{t+1} = x_t$ instead. (To "accept a candidate with probability $\alpha$", pick a uniformly distributed random number $u$ between 0 and 1. If $u \leq \alpha$, accept; otherwise, reject).
+	\end{itemize}
+\end{enumerate}
+\medskip
+
+This algorithm proceeds by randomly attempting to move about the sample space, sometimes accepting the moves and sometimes remaining in place. Note that the acceptance ratio a indicates how probable the new proposed sample is with respect to the current sample, according to the distribution $P\left(x\right)$. If we attempt to move to a point that is more probable than the existing point (i.e. a point in a higher-density region of $P\left(x\right)$), we will always accept the move. However, if we attempt to move to a less probable point, we will sometimes reject the move, and the more the relative drop in probability, the more likely we are to reject the new point. Thus, we will tend to stay in (and return large numbers of samples from) high-density regions of $P\left(x\right)$, while only occasionally visiting low-density regions. Intuitively, this is why this algorithm works, and returns samples that follow the desired distribution $P\left(x\right)$. \medskip
+
+When using this algorithm for sampling from the target distributions above, the envelope distribution used is the ``Exponential distribution'' given by the density function
+\begin{equation} \label{eq:exp_pdf}
+f\left(x; \lambda\right) = \lambda e^{-\lambda x}, \hspace{1.0cm} x \geq 0
+\end{equation}
+
+Our aim is to achieve a simulation which displays maximum randomness of the generated $\lambda$ and $\beta$. We expect a step function in each case (for $\lambda$ and $\beta$) but the length of each step should be really small for a good sampling. This in turn means that the values should be accepted more frequently. To achieve a good acceptance condition, we have tried exponential distributions with different parameters. Finally we have picked the one that displays the desired randomness. \medskip
+
+We have sampled from both the target distributions (for $\lambda$ and $\beta$) simultaneously. For this, the following steps were used:-
+
+\begin{enumerate}
+	\item We have assumed initial seeds $\lambda_0$ and $\beta_0$.
+	
+	\item Using the generated set of Weibull variates and the seeds, we generate $\lambda_1$ from \eqref{eq:p1}.
+
+	\item We then use the generated $\lambda_1$ to sample from \eqref{eq:p2} to obtain $\beta_1$.
+
+	\item $\beta_1$ is then in turn used to generate $\lambda_2$ and so on. This goes on in cycles until the desired number of values have been generated.
+\end{enumerate}
+\medskip
+
+The algorithm is described in greater detail in the following section.
+
+\pagebreak
+
+\section{Algorithm}
+\medskip
+
+\begin{enumerate}
+	\item Generate $\widetilde{x}$ from \eqref{eq:inv_mod_weibull_cdf}. \medskip
+
+	\item Assume $\beta_0$ and $\lambda_0$. \medskip
+
+	\item Generate $x^\star$ from the exponential distribution. \medskip
+
+	\item Calculate the acceptance ratio $a = $ min$\left\lbrace1,\: \dfrac{p_1\left(x^\star | \beta_t, \widetilde{x} \right) e^{-\overline{\lambda} x}}{p_1\left(\lambda_t | \beta_t, \widetilde{x} \right) e^{-\overline{\lambda} x^\star}}\right\rbrace$, \medskip
+
+			where $p_1\left(\lambda | \beta, x\right)$ is given by \eqref{eq:p1}. We accept $x^\star$ with this probability. If $x^\star$ is accepted, then $\lambda_{t+1} = x^\star$. Otherwise, $\lambda_{t+1} = \lambda_t$. (Here, $\lambda_t$ and $\beta_t$ refer to the $\lambda$ and $\beta$ generated in the previous iteration). \medskip
+
+	\item Generate $x^\star$ from the exponential distribution. \medskip
+
+	\item Calculate the acceptance ratio $a = $ min$\left\lbrace1,\: \dfrac{p_2\left(x^\star | \lambda_t, \widetilde{x}\right) e^{-\overline{\lambda} x}}{p_2\left(\beta_t | \lambda_t, \widetilde{x}\right) e^{-\overline{\lambda} x^\star}}\right\rbrace$, \medskip
+
+			where $p_2\left(\beta | \lambda, x\right)$ is given by \eqref{eq:p2}. We accept $x^\star$ with this probability. If $x^\star$ is accepted, then $\beta_{t+1} = x^\star$. Otherwise, $\beta_{t+1} = \beta_t$. (Here, $\lambda_t$ refers to the $\lambda$ generated in step \textbf{4} and $\beta_t$ refers to the $\beta$ generated in the previous iteration). \medskip
+
+	\item Go to step \textbf{3} till we get the number of values desired.
+\end{enumerate}
+
+\pagebreak
+
+\section{Source Code}
+\subsection{Generating the Distributions}
+\medskip
+
+\lstinputlisting[caption = {R code which generates the modified weibull distribution and the posterior distributions.}, label=lst:prog1, language=R]{Code/Project.R}
+
+\pagebreak
+
+\subsection{Generating the Graphs}
+\medskip
+
+\lstinputlisting[caption = {R code which generates the plots.}, label=lst:prog2, language=R]{Code/PlotGraphs.R}
+
+\pagebreak
+
+\section{Results}
+\subsection{Histograms}
+
+\begin{figure}[H]
+	\centering
+	\resizebox{0.9\linewidth}{!}{\includegraphics{Images/HistogramA.png}}
+	\caption{Histogram for $x$ which follows the Modified Weibull Distribution with $\lambda = 0.9, \beta = 0.9, \alpha = 0.5$ and N = 10000.}
+	\label{fig:hist1}
+\end{figure}
+\medskip
+
+\begin{figure}[H]
+	\centering
+	\resizebox{0.9\linewidth}{!}{\includegraphics{Images/HistogramB.png}}
+	\caption{Histogram for $x$ which follows the Modified Weibull Distribution with $\lambda = 0.9, \beta = 0.9, \alpha = 3.0$ and N = 10000.}
+	\label{fig:hist2}
+\end{figure}
+\medskip
+
+\begin{figure}[H]
+	\centering
+	\resizebox{1.0\linewidth}{!}{\includegraphics{Images/HistogramC.png}}
+	\caption{Histogram for $x$ which follows the Modified Weibull Distribution with $\lambda = 2.0, \beta = 2.0, \alpha = 3.0$ and N = 10000.}
+	\label{fig:hist3}
+\end{figure}
+\medskip
+
+\begin{figure}[H]
+	\centering
+	\resizebox{1.0\linewidth}{!}{\includegraphics{Images/HistogramD.png}}
+	\caption{Histogram for $x$ which follows the Modified Weibull Distribution with $\lambda = 2.0, \beta = 2.0, \alpha = 0.5$ and N = 10000.}
+	\label{fig:hist4}
+\end{figure}
+\medskip
+
+\pagebreak
+
+\subsection{Graphs}
+
+\begin{figure}[H]
+	\centering
+	\resizebox{0.9\linewidth}{!}{\includegraphics{Images/PlotA1.png}}
+	\caption{Graph for $\lambda$ when $x$ follows the Modified Weibull Distribution with $\lambda = 0.9, \beta = 0.9, \alpha = 0.5$ and N = 100.}
+	\label{fig:graph_a1}
+\end{figure}
+\medskip
+
+\begin{figure}[H]
+	\centering
+	\resizebox{0.9\linewidth}{!}{\includegraphics{Images/PlotA2.png}}
+	\caption{Graph for $\beta$ when $x$ follows the Modified Weibull Distribution with $\lambda = 0.9, \beta = 0.9, \alpha = 0.5$ and N = 100.}
+	\label{fig:graph_a2}
+\end{figure}
+\medskip
+
+\begin{figure}[H]
+	\centering
+	\resizebox{1\linewidth}{!}{\includegraphics{Images/PlotB1.png}}
+	\caption{Graph for $\lambda$ when $x$ follows the Modified Weibull Distribution with $\lambda = 0.9, \beta = 0.9, \alpha = 3.0$ and N = 100.}
+	\label{fig:graph_b1}
+\end{figure}
+\medskip
+
+\begin{figure}[H]
+	\centering
+	\resizebox{1\linewidth}{!}{\includegraphics{Images/PlotB2.png}}
+	\caption{Graph for $\beta$ when $x$ follows the Modified Weibull Distribution with $\lambda = 0.9, \beta = 0.9, \alpha = 3.0$ and N = 100.}
+	\label{fig:graph_b2}
+\end{figure}
+\medskip
+
+\begin{figure}[H]
+	\centering
+	\resizebox{1\linewidth}{!}{\includegraphics{Images/PlotC1.png}}
+	\caption{Graph for $\lambda$ when $x$ follows the Modified Weibull Distribution with $\lambda = 2.0, \beta = 2.0, \alpha = 3.0$ and N = 100.}
+	\label{fig:graph_c1}
+\end{figure}
+\medskip
+
+\begin{figure}[H]
+	\centering
+	\resizebox{1\linewidth}{!}{\includegraphics{Images/PlotC2.png}}
+	\caption{Graph for $\beta$ when $x$ follows the Modified Weibull Distribution with $\lambda = 2.0, \beta = 2.0, \alpha = 3.0$ and N = 100.}
+	\label{fig:graph_c2}
+\end{figure}
+\medskip
+
+\begin{figure}[H]
+	\centering
+	\resizebox{1\linewidth}{!}{\includegraphics{Images/PlotD1.png}}
+	\caption{Graph for $\lambda$ when $x$ follows the Modified Weibull Distribution with $\lambda = 2.0, \beta = 2.0, \alpha = 0.5$ and N = 100.}
+	\label{fig:graph_d1}
+\end{figure}
+\medskip
+
+\begin{figure}[H]
+	\centering
+	\resizebox{1\linewidth}{!}{\includegraphics{Images/PlotD2.png}}
+	\caption{Graph for $\beta$ when $x$ follows the Modified Weibull Distribution with $\lambda = 2.0, \beta = 2.0, \alpha = 0.5$ and N = 100.}
+	\label{fig:graph_d2}
+\end{figure}
+\medskip
+
+\section{Conclusion}
+\medskip
+
+\begin{enumerate}
+	\item \textbf{Interpretation of the histograms of the Modified Weibull Distribution} (\hyperref[fig:hist1]{Figure \ref*{fig:hist1}} to \hyperref[fig:hist4]{Figure \ref*{fig:hist4}})
+	\begin{itemize}
+		\item When $\alpha, \beta, \lambda < 1$, the probability of $x$ increases till it reaches a maximum and then decreases at a different rate. Hence, the graph appears to be unimodal, which highly resembles a $\Gamma$ distribution.
+
+		\item When $\alpha > 1$ and $\beta, \lambda < 1$, the probability of $x$ decreases monotonically. Hence, it resembles a decreasing $\Gamma$ distribution (like the exponential distribution).
+
+		\item When $\alpha, \beta, \lambda > 1$, the probability of $x$ increases till it reaches a maximum and then decreases at an exponential rate. The graph hence appears to be unimodal, though more of the ``decreasing'' nature is exhibited resembling a $\Gamma$ distribution (like the exponential distribution).
+
+		\item When $\alpha < 1$ and $\beta, \lambda > 1$, the probability of $x$ increases till it reaches a maximum and then decreases at a different rate. Hence, the graph appears to be unimodal which highly resembles a $\Gamma$ distribution.
+	\end{itemize}
+
+	Thus, we see that the distribution of the Modified Weibull resembles that of the $\Gamma$ distribution in almost all of the cases as expected. \medskip
+
+	\item \textbf{Interpretation of the graphs of $\lambda$ and $\beta$}
+	\begin{itemize}
+		\item Due to the variation of $\lambda$ and $\beta$ in \hyperref[fig:graph_a1]{Figure \ref*{fig:graph_a1}} to \hyperref[fig:graph_d2]{Figure \ref*{fig:graph_d2}}, we can see that we are accepting a large number of values, which indicates that the acceptance probability as a whole is high. As a result, we see the randomness in $\lambda$ and $\beta$ that we desire. We have achieved so by trying different exponential distributions, finally settling with $0.01e^{-0.01x}$ i.e. the parameter of the same is 0.01.
+
+		\item As we increase the mean of the exponential distribution (the candidate distribution) we get a higher acceptance probability. Hence there is an increase in variation of $\lambda$ and $\beta$.
+
+		\item When the value generated by the exponential distribution is larger compared to the previous value of $\lambda$ or $\beta$, it is accepted by default. This is because of the acceptance ratio being defined as $a = $ min$\left\lbrace1,\: \dfrac{p_1\left(x^\star | \beta_t, \widetilde{x} \right) e^{-\overline{\lambda} x}}{p_1\left(\lambda_t | \beta_t, \widetilde{x} \right) e^{-\overline{\lambda} x^\star}}\right\rbrace$ when accepting $\lambda$ or $a = $ min$\left\lbrace1,\: \dfrac{p_2\left(x^\star | \lambda_t, \widetilde{x}\right) e^{-\overline{\lambda} x}}{p_2\left(\beta_t | \lambda_t, \widetilde{x}\right) e^{-\overline{\lambda} x^\star}}\right\rbrace$ when accepting $\beta$.
+	\end{itemize}
+\end{enumerate}
+
+\end{document}

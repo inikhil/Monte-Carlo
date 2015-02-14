@@ -1,0 +1,463 @@
+\documentclass[10pt]{article}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{float}
+\usepackage{color}
+\usepackage{picture}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{subcaption}
+\usepackage[utf8]{inputenc}
+
+% Used to change font to Times TX
+\usepackage{txfonts}
+\usepackage[T1]{fontenc}
+
+% Used for the figures that have been inserted into the document.
+\floatstyle{plain} 
+\restylefloat{figure}
+
+% Used so as not to indent paragraphs.
+\setlength\parindent{0pt}
+
+% Used for syntax highlighting in code.
+\definecolor{skyblue}{rgb}{0.53, 0.81, 0.92}
+\definecolor{lightred}{rgb}{0.90, 0.36, 0.36}
+\definecolor{darkkhaki}{rgb}{0.71, 0.51, 0.06}
+
+% Default parameters for listings package.
+\lstset {
+	tabsize=4,
+	keywordstyle=\color{darkkhaki},
+	commentstyle=\color{blue},
+	showstringspaces=false,
+	stringstyle=\color{lightred},
+	frame=TLRB,
+	captionpos=b,
+	basicstyle=\small\sffamily
+}
+
+% Default parameters for hyperref package.
+\hypersetup {
+	pdftoolbar=true,
+	pdfmenubar=true,
+	colorlinks=true,
+	linkcolor=red,
+	citecolor=green,
+	filecolor=magenta,
+	urlcolor=cyan
+}
+
+\begin{document}
+
+\title{\textbf{\textsc{Assignment 3}}}
+\author{MA226 : Monte Carlo Simulation \\
+			Name: Nikhil Agarwal \\
+			Roll No : 11012323 \\
+			IIT Guwahati}
+\date{}
+\maketitle
+
+\begin{center}
+	\line(1, 0){15cm}
+\end{center}
+
+\section{Problem 1}
+
+\subsection{Statement}
+Implement  the  linear  congruence  generator $ x_{i+1} = ax_i $  mod  $ m $ to  generate  a  sequence  $ x_i  $  and  hence  uniform random  variable $ u_i $ .  Make  use  of  the  following  set  of  values  of  a  and  m: (a) a=16807  and m = $ 2^{31}-1 $.  (b)  a=40692  and  m = 2147483399 . (c) a = 40014 and m = 2147483563  \\
+\\
+Group  the  values  into  equidistant  ranges  for  the  values  of $  u_i  $ . Tabulate  the  proportions  and  draw  a  bar  diagram  for the  above .  What  do you  observe  ?  Do  it  for  1000  , 10000   and   100000   values.\\
+\\ 
+For  part (a)  do  the  following  :  Plot  the  values  $ (u_i,u_{i+1}) $  on  a   unit  square . Now  zoom  into  the  range  $u_i  \epsilon [0,0.001]$. What  are  your  observations?
+\subsection{Solution}
+
+\subsubsection{Data}
+
+\begin{enumerate}
+
+\item Frequencies for $a = 16807 ,\:  b = 0, \: m = 2^{31}-1,\: x_0 = 1$ are as follows:- 
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+$N$ & 1000  & 10000 & 1000000\\
+\hline
+$0.00-0.05$ & 46 & 487 & 4940\\
+\hline
+$0.05-0.10$ & 51 & 507 & 5107 \\
+\hline
+$0.10-0.15$ & 51 & 499 & 4999 \\
+\hline
+$0.15-0.20$ & 46 & 508 & 5017\\
+\hline
+$0.20-0.25$ & 46 & 508 & 4934 \\
+\hline
+$0.25-0.30$ & 50 & 490 & 4929\\
+\hline
+$0.30-0.35$ & 39 & 470 & 4959\\
+\hline
+$0.35-0.40$ & 54 & 488 & 4919\\
+\hline
+$0.40-0.45$ & 58 & 491 & 4938 \\
+\hline
+$0.45-0.50$ & 59 & 509 & 5074\\
+\hline
+$0.50-0.55$ & 64 & 537 & 5152\\
+\hline
+$0.55-0.60$ & 47 & 512 & 5153 \\
+\hline
+$0.60-0.65$ & 39 & 493 & 5024 \\
+\hline
+$0.65-0.70$ & 71 & 496 & 4907\\
+\hline
+$0.70-0.75$ & 52 & 471 & 4976 \\
+\hline
+$0.75-0.80$ & 42 & 492 & 4979 \\
+\hline
+$0.80-0.85$ & 55 & 510 & 5040\\
+\hline
+$0.85-0.90$ & 41 & 516 & 5078 \\
+\hline
+$0.90-0.95$ & 47 & 479 & 4948 \\
+\hline
+$0.95-1.00$ & 42 & 537  & 4947 \\
+\hline
+\end{tabular}
+\end{center}
+\caption{}
+\label{tab:q2_seq1}
+\end{table}
+\medskip
+\item Frequencies for $a = 40692 ,\: b = 0, \: m = 2147483399 ,\: x_0 = 1$ are as follows:- 
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+$N$ & 1000  & 10000 & 1000000\\
+\hline
+$0.00-0.05$ & 50 & 490 & 5009\\
+\hline
+$0.05-0.10$ & 53 & 525 & 4964 \\
+\hline
+$0.10-0.15$ & 53 & 485 & 4984 \\
+\hline
+$0.15-0.20$ & 50 & 493 & 5114\\
+\hline
+$0.20-0.25$ & 58 & 509 & 4977 \\
+\hline
+$0.25-0.30$ & 39 & 517 & 5031\\
+\hline
+$0.30-0.35$ & 44 & 455 & 4948\\
+\hline
+$0.35-0.40$ & 41 & 540 & 5109\\
+\hline
+$0.40-0.45$ & 57 & 509 & 4958 \\
+\hline
+$0.45-0.50$ & 41 & 457 & 5054\\
+\hline
+$0.50-0.55$ & 46 & 507 & 5031\\
+\hline
+$0.55-0.60$ & 59 & 540 & 4987 \\
+\hline
+$0.60-0.65$ & 50 & 473 & 4912 \\
+\hline
+$0.65-0.70$ & 58 & 519 & 4995\\
+\hline
+$0.70-0.75$ & 52 & 509 & 5015 \\
+\hline
+$0.75-0.80$ & 53 & 482 & 4981 \\
+\hline
+$0.80-0.85$ & 54 & 505 & 4965\\
+\hline
+$0.85-0.90$ & 46 & 497 & 4963 \\
+\hline
+$0.90-0.95$ & 47 & 474 & 4968 \\
+\hline
+$0.95-1.00$ & 49 & 514  & 5035 \\
+\hline
+\end{tabular}
+\end{center}
+\caption{}
+\label{tab:q2_seq1}
+\end{table}
+\medskip
+\item Frequencies for $a = 40014 ,\: b = 0, \: m = 2147483563 ,\: x_0 = 1$ are as follows:- 
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+$N$ & 1000  & 10000 & 1000000\\
+\hline
+$0.00-0.05$ & 57 & 502 & 5103\\
+\hline
+$0.05-0.10$ & 53 & 495 & 4947 \\
+\hline
+$0.10-0.15$ & 50 & 492 & 5142 \\
+\hline
+$0.15-0.20$ & 52 & 463 & 4948\\
+\hline
+$0.20-0.25$ & 47 & 526 & 5006 \\
+\hline
+$0.25-0.30$ & 49 & 533 & 5014\\
+\hline
+$0.30-0.35$ & 52 & 524 & 5088\\
+\hline
+$0.35-0.40$ & 44 & 488 & 5081\\
+\hline
+$0.40-0.45$ & 45 & 468 & 5044 \\
+\hline
+$0.45-0.50$ & 48 & 517 & 4798\\
+\hline
+$0.50-0.55$ & 38 & 498 & 4994\\
+\hline
+$0.55-0.60$ & 50 & 503 & 5007 \\
+\hline
+$0.60-0.65$ & 63 & 478 & 4968 \\
+\hline
+$0.65-0.70$ & 53 & 484 & 4971\\
+\hline
+$0.70-0.75$ & 49 & 521 & 4983 \\
+\hline
+$0.75-0.80$ & 46 & 501 & 4967 \\
+\hline
+$0.80-0.85$ & 50 & 496 & 5036\\
+\hline
+$0.85-0.90$ & 60 & 551 & 4990 \\
+\hline
+$0.90-0.95$ & 43 & 488 & 4905 \\
+\hline
+$0.95-1.00$ & 51 & 471  & 5008 \\
+\hline
+\end{tabular}
+\end{center}
+\caption{}
+\label{tab:q2_seq1}
+\end{table}
+\medskip
+\end{enumerate}
+\subsubsection{Histogram}
+	\begin{figure}[H]
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{168071.png}}
+		\caption{Graph for a = 16807  and  n = 1000}	
+		\label{3:q3_f1_a}
+	\end{figure}
+	\begin{figure}{H}
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{168072.png}}
+		\caption{Graph for a = 16807  and  n = 10000}	
+		\label{3:q3_f1_b}
+	\end{figure}
+	\begin{figure}[H]
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{168073.png}}
+		\caption{Graph for a = 16807  and  n = 100000}	
+		\label{3:q3_f1_c}
+	\end{figure}
+	\begin{figure}[H]
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{406921.png}}
+		\caption{Graph for  a=40692  and  n = 1000}	
+		\label{3:q3_f1_a}
+	\end{figure}
+	\begin{figure}[H]
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{406922.png}}
+		\caption{Graph for a = 40692  and  n = 10000}	
+		\label{3:q3_f1_b}
+	\end{figure}
+	\begin{figure}[H]
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{406923.png}}
+		\caption{Graph for a = 40692  and  n =  100000}	
+		\label{3:q3_f1_c}
+	\end{figure}
+	\begin{figure}[H]
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{c1.png}}
+		\caption{Graph for a = 40014  and  n = 1000}	
+		\label{3:q3_f1_a}
+	\end{figure}
+	\begin{figure}[H]
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{c2.png}}
+		\caption{Graph for a = 40014  and  n = 10000}	
+		\label{3:q3_f1_b}
+	\end{figure}
+	\begin{figure}[H]
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{c3.png}}
+		\caption{Graph for a = 40014  and n = 100000}	
+		\label{3:q3_f1_c}
+	\end{figure}
+\subsection{plot}
+	\begin{figure}[H]
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{e1.png}}
+		\caption{Graph of u(i) vs u(i+1) for $ a =16807 $  and $ n = 1000  $}	
+		\label{3:q3_f1_a}
+	\end{figure}
+	\begin{figure}[H]
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{e2.png}}
+		\caption{Graph of u(i)  vs  u(i+1) for $ a = 16807 $  and   $ n = 10000 $}	
+		\label{3:q3_f1_b}
+	\end{figure}
+	\begin{figure}[H]
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{e3.png}}
+		\caption{Graph of u(i)  vs  u(i+1) for $ a= 16807   $ and $ n = 100000 $}	
+		\label{3:q3_f1_c}
+	\end{figure}
+	\begin{figure}[H]
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{e21.png}}
+		\caption{Graph of u(i)  vs  u(i+1) for $  u(i)\epsilon[0,0.001] $  and   $ n = 10000 $}	
+		\label{3:q3_f1_a}
+	\end{figure}
+	\begin{figure}[H]
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{e31.png}}
+		\caption{Graph of u(i)  vs  u(i+1) for $  u[i]\epsilon[0,0.001] $  and $  n = 100000 $}	
+		\label{3:q3_f1_a}
+	\end{figure}
+\subsection{Observations}
+\begin{itemize}
+\item As the value of n increases the distribution becomes more uniform.
+\item As the value of n increases we get more and more points in unit square and for n=100000 ,it almost covers the whole region.
+\item When we zoom x-axis to .001 we can see that for n=1000,we are getting very less number of points but for n=100000 we get many more points. 
+\end{itemize}
+\subsubsection{C++ Code}
+\lstinputlisting[caption=\texttt{C++} code which generates the sequence for $u_i$ and puts it into the given intervals., label=label=lst:q2_prog1, language=C++]{random1.cpp}
+\pagebreak
+
+\section{Problem 2}
+\subsection{Statement}
+Consider the extended Fibonacci generator:\\
+\begin{center}
+	$U_i=(U_{i-17}+U_{i-5}) mod 2^{31}$
+\end{center}
+
+(a) Use the linear congruence generator to generate the first 17 values of $U_i$. (b) Then generate the values of $U_i$ (say for 1000 , 10000 and 100000 values ). (c) For each of the above set of values plot ($U_i,U_{i+1}$). (d) Observe (give the values )the congruence of sample mean and sample variance towards actual values,and generate a  probability distribution with say 1000 generated values.(e) Compute the Autocorrelation of lags $1,2,3,4 and 5 $ with $1000$ generated values. 
+\subsection{Solution}
+\subsubsection{Data}
+
+\begin{enumerate}
+
+\item Frequencies for Fibonacci generator are as follows:- 
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+$N$ & 1000  & 10000 & 1000000\\
+\hline
+$0.00-0.05$ & 45 & 506 & 4882\\
+\hline
+$0.05-0.10$ & 45 & 503 & 4950 \\
+\hline
+$0.10-0.15$ & 51 & 498 & 5034 \\
+\hline
+$0.15-0.20$ & 54 & 491 & 5053\\
+\hline
+$0.20-0.25$ & 62 & 542 & 4914 \\
+\hline
+$0.25-0.30$ & 48 & 477 & 5050\\
+\hline
+$0.30-0.35$ & 51 & 506 & 4967\\
+\hline
+$0.35-0.40$ & 44 & 508 & 5197\\
+\hline
+$0.40-0.45$ & 47 & 495 & 4997 \\
+\hline
+$0.45-0.50$ & 39 & 489 & 4965\\
+\hline
+$0.50-0.55$ & 50 & 522 & 5032\\
+\hline
+$0.55-0.60$ & 55 & 513 & 4989 \\
+\hline
+$0.60-0.65$ & 48 & 472 & 5014 \\
+\hline
+$0.65-0.70$ & 53 & 492 & 4985\\
+\hline
+$0.70-0.75$ & 40 & 473 & 4949 \\
+\hline
+$0.75-0.80$ & 47 & 495 & 4981 \\
+\hline
+$0.80-0.85$ & 52 & 544 & 5068\\
+\hline
+$0.85-0.90$ & 45 & 499 & 4956 \\
+\hline
+$0.90-0.95$ & 60 & 522 & 4958 \\
+\hline
+$0.95-1.00$ & 64 & 453  & 5059 \\
+\hline
+\end{tabular}
+\end{center}
+\caption{}
+\label{tab:q2_seq1}
+\end{table}
+\medskip
+\end{enumerate}
+\subsection{Graph}
+	\begin{figure}[H]
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{21.png}}
+		\caption{Graph of u(i) vs u(i+1) for $  n =  1000  $}	
+		\label{3:q3_f1_a}
+	\end{figure}
+	\begin{figure}[H]
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{22.png}}
+		\caption{Graph of u(i)  vs  u(i+1) for $   n =  10000 $}	
+		\label{3:q3_f1_b}
+	\end{figure}
+	\begin{figure}[H]
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{23.png}}
+		\caption{Graph of u(i)  vs u(i+1) for $ n = 100000  $}	
+		\label{3:q3_f1_c}
+	\end{figure}
+	\begin{figure}[H]
+       	     	\centering
+		\resizebox{0.6\textwidth}{!}{\includegraphics{freq.png}}
+		\caption{Graph of probability distribution for n=1000}	
+		\label{3:q3_f1_a}
+	\end{figure}
+\subsection{Calculation of Mean and Variance}
+\begin{itemize}
+\item For n=1000
+\begin{itemize}
+\item Mean is  $ 0.517358$
+\item Variance is  $ 0.08782$
+\end{itemize}
+\item For n=10000
+\begin{itemize}
+\item Mean is  $ 0.498994$
+\item Variance is  $ 0.0833803$
+\end{itemize}
+\item For n=100000 
+\begin{itemize}
+\item Mean is  $ 0.499641$
+\item Variance is  $ 0.0832504$
+\end{itemize}
+\end{itemize}
+\subsection{Calculation of Autocorrelation}
+\begin{itemize}
+\item Autocorrelation of lag 1 with 1000 generated values is $ 0.00362249 $
+\item Autocorrelation of lag 2 with 1000 generated values is $ 0.00992058 $
+\item Autocorrelation of lag 3 with 1000 generated values is $ 0.0162985 $
+\item Autocorrelation of lag 4 with 1000 generated values is $ 0.0225886 $
+\item Autocorrelation of lag 5 with 1000 generated values is $ 0.0310102 $
+\end{itemize}
+
+\subsubsection{C++ Code}
+\lstinputlisting[caption=\texttt{C++} code which generates the sequence for $u_i$ and puts it into the given intervals., label=label=lst:q2_prog1, language=C++]{fibgen2.cpp}
+
+\end{document}
